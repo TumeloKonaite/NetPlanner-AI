@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
+from src.pipeline.planning_pipeline import PlanningPipeline
 from src.pipeline.train_pipeline import TrainPipeline
 
 
@@ -7,6 +10,17 @@ def test_train_pipeline():
 
     assert "model_metrics" in result
     assert "best_model_name" in result["model_metrics"]
+
+    return result
+
+
+def test_planning_pipeline():
+    result = PlanningPipeline().run_pipeline()
+
+    assert result["map_output_path"] is not None
+    assert result["priority_sites_csv_path"] is not None
+    assert Path(result["map_output_path"]).exists()
+    assert Path(result["priority_sites_csv_path"]).exists()
 
     return result
 
@@ -33,9 +47,12 @@ def test_predict_pipeline():
 
 if __name__ == "__main__":
     train_result = test_train_pipeline()
+    planning_result = test_planning_pipeline()
     predict_result = test_predict_pipeline()
 
     print("Train pipeline OK")
     print(train_result["model_metrics"])
+    print("Planning pipeline OK")
+    print(planning_result)
     print("Predict pipeline OK")
     print(predict_result)
