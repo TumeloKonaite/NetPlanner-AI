@@ -6,6 +6,10 @@ dist/
 wheels/
 *.egg-info
 .env
+artifacts/
+logs/
+data/
+.ipynb_checkpoints/
 
 
 # Virtual environments
